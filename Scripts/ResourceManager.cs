@@ -23,23 +23,8 @@ public class BundleData
 }
 
 
-public class ResourceManager
+public class ResourceManager : ManagerBase
 {
-    #region Singleton
-    private static ResourceManager _instance;
-    public static ResourceManager Instance
-    {
-        get
-        {
-            if (_instance == null)
-            {
-                _instance = new ResourceManager();
-            }
-            return _instance;
-        }
-    }
-    #endregion
-
     private Dictionary<string, ResourceContainer> m_ResourceDict = new Dictionary<string, ResourceContainer>();
     private string m_ResourceRootPath;
 
@@ -57,9 +42,12 @@ public class ResourceManager
         }
     }
 
+    #region Flow
+    public override void OnPreCreate()
+    {
+    }
 
-
-    public void OnInit()
+    public override void OnCreate()
     {
         OnInitResourcesPath();
         OnInitWorkFlow();
@@ -69,6 +57,24 @@ public class ResourceManager
             Test_PrintBundleInfo();
         }
     }
+
+    public override void OnCreateFinish()
+    {
+    }
+
+    public override void OnPreDestroy()
+    {
+    }
+
+    public override void OnDestroy()
+    {
+    }
+
+    public override void OnDestroyFinish()
+    {
+    }
+    #endregion
+
 
     private void OnInitResourcesPath()
     {
@@ -210,16 +216,6 @@ public class ResourceManager
 
     
 
-    public void OnRelease()
-    {
-
-    }
-
-    public void OnUpdate(float deltaTime)
-    {
-
-    }
-
     /// <summary>
     /// 在编辑器和设备上都调用此接口
     /// </summary>
@@ -256,7 +252,7 @@ public class ResourceManager
         else
         {
             Debug.LogFormat("Release Container {0}", container.bundlePath);
-            container.bundle.Unload(true);
+            container.bundle.Unload(false);
             container = null;
         }
     }
@@ -414,4 +410,6 @@ public class ResourceManager
         obj.AddComponent<ResourceObj>().OnInit(container);
         return obj;
     }
+
+
 }

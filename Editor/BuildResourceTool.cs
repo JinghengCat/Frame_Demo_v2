@@ -7,7 +7,7 @@ public class BuildSetting
 {
     public string outputPath;
     public AssetBundleBuild[] buildSettings;
-    public BuildAssetBundleOptions buildOption = BuildAssetBundleOptions.UncompressedAssetBundle;
+    public BuildAssetBundleOptions buildOption = BuildAssetBundleOptions.ChunkBasedCompression;
     public BuildTarget buildTarget = BuildTarget.StandaloneWindows;
 }
 
@@ -36,13 +36,13 @@ public class BuildResourceTool
             var buildDirPath = string.Format("{0}/{1}", outputFullPath, resDirName);
 
 
-            ////创建文件夹
-            //if (Directory.Exists(buildDirPath))
-            //{
-            //    Directory.Delete(buildDirPath, true);
-            //}
+            //创建文件夹
+            if (Directory.Exists(outputFullPath))
+            {
+                Directory.Delete(outputFullPath, true);
+            }
 
-            //Directory.CreateDirectory(buildDirPath);
+            Directory.CreateDirectory(outputFullPath);
 
             //获取资源文件夹下所有文件路径
             var resFilesPath = Directory.GetFiles(resDirPath);
